@@ -30,8 +30,8 @@ def total_vs_time(df, descr):
     layout = dict(
         title='Covid-19 {}'.format(descr),
         autosize=False,
-        width=950,
-        height=750,
+        width=800,
+        height=600,
     )
 
     return traces, layout
@@ -57,8 +57,8 @@ def new_vs_total(df, descr, window=1):
 
     layout = dict(title='Covid-19 {} rolling mean of {} days'.format(descr, window),
                   autosize=False,
-                  width=950,
-                  height=750,
+                  width=800,
+                  height=600,
                   )
     return traces, layout
 
@@ -81,8 +81,8 @@ def new_vs_time(df, descr, window=1, countries=['Sweden', 'Norway', 'Denmark', '
     layout = dict(
         title='Covid-19 new {} rolling mean of {} days'.format(descr, window),
         autosize=False,
-        width=950,
-        height=750,
+        width=800,
+        height=600,
     )
 
     return traces, layout
