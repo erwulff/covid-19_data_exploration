@@ -93,7 +93,7 @@ app.layout = html.Div([
         className='three columns',
     ),
     html.Div(
-        dcc.Graph(id='graph1', style={'height': '600px'}, responsive=True),
+        dcc.Graph(id='graph1', style={'height': '600px', 'width': '90vw'}, responsive=True),
         className='twelve columns'
     ),
 
@@ -134,7 +134,7 @@ app.layout = html.Div([
         className='three columns'
     ),
     html.Div(
-        dcc.Graph(id='graph2', style={'height': '600px'}, responsive=True),
+        dcc.Graph(id='graph2', style={'height': '600px', 'width': '90vw'}, responsive=True),
         className='twelve columns'
     ),
 ])
