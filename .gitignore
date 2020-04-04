@@ -1,3 +1,6 @@
+# Don't include data in COVID-19 folder
+COVID-19/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
