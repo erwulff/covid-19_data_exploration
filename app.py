@@ -173,7 +173,7 @@ def update_figure2(selected_cases, selected_axis_type, selected_window):
 
     layout.update(dict(
         xaxis={'title': 'Date'},
-        yaxis={'title': 'Covid-19 {}'.format(selected_cases), 'type': selected_axis_type},
+        yaxis={'title': 'Covid-19 new {}'.format(selected_cases), 'type': selected_axis_type},
     ))
 
     return {
