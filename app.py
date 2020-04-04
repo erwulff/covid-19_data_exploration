@@ -66,6 +66,9 @@ app.layout = html.Div([
     The visualizations presented here are based on data from the Johns Hopkins
     University's GitHub [repository](https://github.com/CSSEGISandData/COVID-19).
 
+    The source code of this app is published on GitHub
+    [here](https://github.com/erwulff/covid-19_data_exploration).
+
     ## Number of total confirmed cases/deaths over time
     '''),
 
