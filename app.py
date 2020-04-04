@@ -61,6 +61,8 @@ app.layout = html.Div([
     dcc.Markdown('''
     # Covid-19 data visualization
 
+    *by Eric Wulff*
+
     The visualizations presented here are based on data from the Johns Hopkins
     University's GitHub [repository](https://github.com/CSSEGISandData/COVID-19).
 
@@ -91,7 +93,7 @@ app.layout = html.Div([
         className='three columns',
     ),
     html.Div(
-        dcc.Graph(id='graph1'),
+        dcc.Graph(id='graph1', style={'height': '600px'}, responsive=True),
         className='twelve columns'
     ),
 
@@ -132,7 +134,7 @@ app.layout = html.Div([
         className='three columns'
     ),
     html.Div(
-        dcc.Graph(id='graph2'),
+        dcc.Graph(id='graph2', style={'height': '600px'}, responsive=True),
         className='twelve columns'
     ),
 ])
