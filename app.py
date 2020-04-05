@@ -130,7 +130,7 @@ app.layout = html.Div([
     html.Div(
         dcc.Dropdown(
             id='window_selector',
-            options=[{'label': 'Rolling window: {}'.format(
+            options=[{'label': 'Rolling mean: {}'.format(
                 ii + 1), 'value': ii + 1} for ii in range(14)],
             value=7,
         ),
