@@ -7,6 +7,13 @@ from datetime import datetime
 width = 2
 
 
+def get_frame(name):
+    url = (
+        'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
+        f'csse_covid_19_time_series/time_series_covid19_{name}_global.csv')
+    return pd.read_csv(url, index_col='Country/Region')
+
+
 def process_df(df):
     """Process DataFrame read from COVID-19 database
 

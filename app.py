@@ -10,35 +10,38 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-from utils import get_df, datetimeify, process_df
+from utils import get_df, datetimeify, process_df, get_frame
 # from utils import total_vs_time, new_vs_time, new_vs_total
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
 
 # path do data folder
-path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/'
+# path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/'
 
 # file names
-file_confirmed = 'time_series_covid19_confirmed_global.csv'
-file_deaths = 'time_series_covid19_deaths_global.csv'
-file_recovered = 'time_series_covid19_recovered_global.csv'
+# file_confirmed = 'time_series_covid19_confirmed_global.csv'
+# file_deaths = 'time_series_covid19_deaths_global.csv'
+# file_recovered = 'time_series_covid19_recovered_global.csv'
+
 
 # load DataFrames
-df_conf_all = get_df(file_path=path + file_confirmed)
-df_deaths_all = get_df(file_path=path + file_deaths)
+# df_conf_all = get_df(file_path=path + file_confirmed)
+# df_deaths_all = get_df(file_path=path + file_deaths)
+
+df_conf_all = process_df(get_frame('confirmed'))
+df_deaths_all = process_df(get_frame('deaths'))
 all_countries = list(df_conf_all.keys())
+
 
 date_list = datetimeify(df_conf_all.index)
 
 # Pick countries to plot
 start_countries = [
     'Sweden',
-    'Denmark',
     'Norway',
     'France',
     'Spain',
     'Germany',
     'Switzerland',
-    'Finland',
     'US',
     'Korea, South',
     'Singapore',
@@ -71,6 +74,8 @@ app.layout = html.Div([
 
     The source code of this app is published on GitHub
     [here](https://github.com/erwulff/covid-19_data_exploration).
+
+    Use the search box below to add countries to the plots.
     '''),
     html.Div([
         dcc.Dropdown(
@@ -146,7 +151,7 @@ app.layout = html.Div([
                 {'label': 'Linear', 'value': 'linear'},
                 {'label': 'Logarithmic', 'value': 'log'},
             ],
-            value='linear',
+            value='log',
         ),
         className='three columns',
     ),
@@ -169,6 +174,20 @@ app.layout = html.Div([
     html.Div([
         dcc.Markdown('''
         ## New vs. total confirmed cases/deaths
+
+        If the growth of something is proportional to its prevalence the growth
+        is exponential. This results in that the growth
+        is accelerating with time.
+
+        In terms of a pandemic this translates to that the number of newly
+        infected people per day is proportional to the total number of infected
+        people. Therefore exponential growth appears as a straight line if you
+        plot the new cases against the total cases. The steepness of this line
+        corresponds to the growth rate.
+
+        This plot makes it easy to see which countries have managed to
+        break the exponential trend, thus plummeting towards fewer new cases per
+        day.
         '''),
     ],
         className='twelve columns'),
