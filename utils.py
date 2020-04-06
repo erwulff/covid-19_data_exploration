@@ -113,13 +113,13 @@ def new_vs_total(df, descr, window=1):
     fig.show()
 
 
-def new_vs_time(df, descr, window=1, countries=['Sweden', 'Norway', 'Denmark', 'Finland']):
+def new_vs_time(df, descr, window=1):
     date_list = datetimeify(df.index)
     # Create figure
     fig = go.Figure()
 
     # Add traces, one for each slider step
-    for ii, country in enumerate(countries):
+    for ii, country in enumerate(df.keys()):
         fig.add_trace(
             go.Scatter(
                 line=dict(width=width),

@@ -15,10 +15,6 @@ def total_vs_time(df, descr):
     traces = []
     # Add traces, one for each slider step
     for ii, country in enumerate(df.keys()):
-        if country == 'Sweden':
-            width = 4
-        else:
-            width = 2
         traces.append(
             dict(
                 line=dict(width=width),
@@ -28,7 +24,7 @@ def total_vs_time(df, descr):
                 y=df[country]))
 
     layout = dict(
-        title='Covid-19 {}'.format(descr),
+        title='Total Covid-19{}'.format(descr),
         autosize=True,
         width=800,
         height=600,
@@ -43,10 +39,6 @@ def new_vs_total(df, descr, window=1):
 
     # Add traces, one for each slider step
     for ii, country in enumerate(df.keys()):
-        if country == 'Sweden':
-            width = 4
-        else:
-            width = 2
         traces.append(
             dict(
                 line=dict(width=width),
@@ -55,7 +47,7 @@ def new_vs_total(df, descr, window=1):
                 x=df[country].rolling(window=window).mean(),
                 y=df.diff()[country].rolling(window=window).mean()))
 
-    layout = dict(title='Covid-19 {} rolling mean of {} days'.format(descr, window),
+    layout = dict(title='Rolling mean of {} days'.format(window),
                   autosize=True,
                   width=800,
                   height=600,
@@ -63,13 +55,13 @@ def new_vs_total(df, descr, window=1):
     return traces, layout
 
 
-def new_vs_time(df, descr, window=1, countries=['Sweden', 'Norway', 'Denmark', 'Finland']):
+def new_vs_time(df, descr, window=1):
     date_list = datetimeify(df.index)
 
     # Create figure
     traces = []
     # Add traces, one for each slider step
-    for ii, country in enumerate(countries):
+    for ii, country in enumerate(df.keys()):
         traces.append(
             dict(
                 line=dict(width=width),
@@ -79,7 +71,7 @@ def new_vs_time(df, descr, window=1, countries=['Sweden', 'Norway', 'Denmark', '
                 y=df.iloc[39:].diff()[country].rolling(window).mean()))
 
     layout = dict(
-        title='Covid-19 new {} rolling mean of {} days'.format(descr, window),
+        title='New Covid-19 {} rolling mean of {} days'.format(descr, window),
         autosize=True,
         width=800,
         height=600,
