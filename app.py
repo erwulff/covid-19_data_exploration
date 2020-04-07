@@ -35,20 +35,27 @@ all_countries = list(df_conf_all.keys())
 date_list = datetimeify(df_conf_all.index)
 
 # Pick countries to plot
-start_countries = [
-    'Sweden',
-    'Norway',
-    'France',
-    'Spain',
-    'Germany',
-    'Switzerland',
-    'US',
-    'Korea, South',
-    'Singapore',
-    'Italy',
-    'United Kingdom'
-]
-start_countries.sort()
+
+
+def get_start_conutries():
+    start_countries = [
+        'Sweden',
+        'Norway',
+        'France',
+        'Spain',
+        'Germany',
+        'Switzerland',
+        'US',
+        'Korea, South',
+        'Singapore',
+        'Italy',
+        'United Kingdom'
+    ]
+    start_countries.sort()
+    return start_countries
+
+
+start_countries = get_start_conutries()
 
 # Filter DataFrames
 df_conf = df_conf_all[start_countries]
@@ -315,6 +322,19 @@ def update_figure2(selected_cases,
         'data': traces,
         'layout': layout,
     }
+
+
+@app.callback(
+    Output('country_dropdown', 'value'),
+    [Input('button1', 'n_clicks'),
+     Input('reset_button', 'n_clicks')]
+)
+def update_drowdown2(button, reset):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'button1' in changed_id:
+        return ['Sweden', 'Denmark', 'Finland', 'Norway']
+    elif 'reset_button' in changed_id:
+        return get_start_conutries()
 
 
 @app.callback(
