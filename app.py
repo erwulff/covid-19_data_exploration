@@ -86,7 +86,7 @@ app.layout = html.Div([
     '''),
     html.Div([
         dcc.Dropdown(
-            placeholder='Select countries...',
+            placeholder='Search countries...',
             id='country_dropdown',
             multi=True,
             value=start_countries,
