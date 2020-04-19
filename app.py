@@ -241,7 +241,7 @@ def update_multi_options(search_value, value):
     # Make sure that the set values are in the option list, else they will disappear
     # from the shown select list, but still part of the `value`.
     return [
-        o for o in country_options if search_value in o["label"] or o["value"] in (value or [])
+        o for o in country_options if (search_value in o["label"] or o["value"] in (value or [])) or (search_value.capitalize() in o["label"] or o["value"] in (value or []))
     ]
 
 
