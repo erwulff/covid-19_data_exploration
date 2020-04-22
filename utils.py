@@ -4,6 +4,31 @@ import numpy as np
 from datetime import datetime
 
 
+def get_xl_sheets(file, nbr_of_sheets=6):
+    """Returns a list of DataFrames where each DataFrame is a sheet of the excel
+    file at `file`.
+
+    Parameters
+    ----------
+    file : string
+        Filename of, or path to, excel file.
+    nbr_of_sheets : type
+        Number of sheets to extract from the excel file. Must be equal to or
+        lower than the actual number of sheets in the file.
+
+    Returns
+    -------
+    List
+        List of Dataframes.
+
+    """
+    sheets = []
+    for ii in range(6):
+        sheet = pd.read_excel(file, ii)
+        sheets.append(sheet)
+    return sheets
+
+
 width = 2
 
 
