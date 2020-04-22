@@ -33,7 +33,7 @@ def total_vs_time(df, descr):
     return traces, layout
 
 
-def new_vs_total(df, descr, window=1):
+def new_vs_total(df, window=1):
     # Create figure
     traces = []
 
@@ -77,4 +77,39 @@ def new_vs_time(df, descr, window=1):
         height=600,
     )
 
+    return traces, layout
+
+
+def landskap(df, total=False, window=1):
+    df = df.copy()
+
+    dates = df.pop('Statistikdatum')
+
+    sorted_df = df.sort_values(by=len(df) - 2, axis=1, ascending=False)
+    filtered_df = sorted_df.iloc[:, :16]
+    #filtered_df.insert(0, 'Statistikdatum', dates)
+    df = filtered_df
+
+    if total:
+        df = df.cumsum()
+        dates = dates[1:]
+
+    # Create figure
+    traces = []
+
+    # Add traces, one for each slider step
+    for ii, landskap in enumerate(df.keys()):
+        traces.append(
+            dict(
+                line=dict(width=width),
+                name=str(landskap),
+                mode='lines+markers',
+                x=dates,
+                y=df[landskap].rolling(window=window).mean()))
+
+    layout = dict(title='Rolling mean of {} days'.format(window),
+                  autosize=True,
+                  width=800,
+                  height=600,
+                  )
     return traces, layout
