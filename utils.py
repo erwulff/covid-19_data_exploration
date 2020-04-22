@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 from datetime import datetime
+from pandas import ExcelWriter
+from pandas import ExcelFile
 
 
 def get_xl_sheets(file, nbr_of_sheets=6):
