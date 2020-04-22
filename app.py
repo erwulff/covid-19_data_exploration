@@ -1,3 +1,4 @@
+import subprocess
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,26 +7,13 @@ from dash.exceptions import PreventUpdate
 
 
 import pandas as pd
-
 import numpy as np
 from datetime import datetime
+import wget
 
-from utils import get_df, datetimeify, process_df, get_frame
-# from utils import total_vs_time, new_vs_time, new_vs_total
+from utils import get_df, datetimeify, process_df, get_frame, get_xl_sheets
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
-
-# path do data folder
-# path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/'
-
-# file names
-# file_confirmed = 'time_series_covid19_confirmed_global.csv'
-# file_deaths = 'time_series_covid19_deaths_global.csv'
-# file_recovered = 'time_series_covid19_recovered_global.csv'
-
-
-# load DataFrames
-# df_conf_all = get_df(file_path=path + file_confirmed)
-# df_deaths_all = get_df(file_path=path + file_deaths)
+from my_dash_functions import landskap
 
 df_conf_all = process_df(get_frame('confirmed'))
 df_deaths_all = process_df(get_frame('deaths'))
@@ -33,6 +21,15 @@ all_countries = list(df_conf_all.keys())
 
 
 date_list = datetimeify(df_conf_all.index)
+
+
+# Get Swedish data
+url = 'https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data'
+# wget.download(url, 'sweden_xl_file.xlsx', True)
+
+subprocess.run(["wget", '-q', "-r", "-N", url, '-O', 'sweden_xl_file.xlsx'])
+
+sheets = get_xl_sheets(file='sweden_xl_file.xlsx')
 
 # Pick countries to plot
 
@@ -98,7 +95,8 @@ app.layout = html.Div([
     ),
     html.Div([
         dcc.Markdown('''
-                     ## Total confirmed cases/deaths
+                     # Total confirmed cases/deaths
+                     ##### Click on countries in the legend to hide them
                      '''),
     ],
         className='twelve columns'
@@ -134,7 +132,9 @@ app.layout = html.Div([
     ),
     html.Div([
         dcc.Markdown('''
-        ## New confirmed cases/deaths per day
+        # New confirmed cases/deaths per day
+        ##### Click on countries in the legend to hide them
+
         '''),
     ],
         className='twelve columns'),
@@ -180,7 +180,7 @@ app.layout = html.Div([
 
     html.Div([
         dcc.Markdown('''
-        ## New vs. total confirmed cases/deaths
+        # New vs. total confirmed cases/deaths
 
         If the growth of something is proportional to its prevalence the growth
         is exponential. This results in that the growth
@@ -195,6 +195,7 @@ app.layout = html.Div([
         This plot makes it easy to see which countries have managed to
         break the exponential trend, thus plummeting towards fewer new cases per
         day.
+        ##### Click on countries in the legend to hide them
         '''),
     ],
         className='twelve columns'),
@@ -224,6 +225,53 @@ app.layout = html.Div([
         dcc.Graph(id='graph3', style={'height': '600px', 'width': '85vw'}, responsive=True),
         className='twelve columns'
     ),
+    html.Div([
+        dcc.Markdown('''
+        # A closer look at Sweden
+        #### Top 15 regions according to number of confirmed cases
+        ##### Click on regions in the legend to hide them
+        '''),
+    ],
+        className='twelve columns'),
+
+    html.Div([
+        dcc.Dropdown(
+            id='dropdown_sweden',
+            options=[
+                {'label': 'New cases', 'value': 'new'},
+                {'label': 'Total cases', 'value': 'total'},
+            ],
+            value='new',
+        ),
+    ],
+        className='three columns',
+    ),
+    html.Div(
+        dcc.Dropdown(
+            id='axis_dropdown_sweden',
+            options=[
+                {'label': 'Linear', 'value': 'linear'},
+                {'label': 'Logarithmic', 'value': 'log'},
+            ],
+            value='log',
+        ),
+        className='three columns',
+    ),
+    html.Div(
+        dcc.Dropdown(
+            id='window_selector_sweden',
+            options=[{'label': 'Rolling mean: {}'.format(
+                ii + 1), 'value': ii + 1} for ii in range(14)],
+            value=7,
+        ),
+        className='three columns'
+    ),
+    html.Div(
+        dcc.Graph(id='graph_sweden', style={'height': '600px', 'width': '85vw'}, responsive=True),
+        className='twelve columns'
+    ),
+
+
 ])
 
 
@@ -363,11 +411,53 @@ def update_figure3(selected_cases,
     elif selected_cases == 'deaths':
         df = df_deaths_all[selected_countries]
 
-    traces, layout = new_vs_total(df, descr=selected_cases, window=selected_window)
+    traces, layout = new_vs_total(df, window=selected_window)
 
     layout.update(dict(
         xaxis={'title': 'Total {}'.format(selected_cases), 'type': 'log'},
         yaxis={'title': 'New {}'.format(selected_cases), 'type': 'log'},
+    ))
+
+    return {
+        'data': traces,
+        'layout': layout,
+    }
+
+
+@app.callback(
+    Output('graph_sweden', 'figure'),
+    [Input('dropdown_sweden', 'value'),
+     Input('axis_dropdown_sweden', 'value'),
+     Input('window_selector_sweden', 'value'),
+     Input('country_dropdown', 'value'),
+     Input("button1", "n_clicks"),
+     Input("reset_button", "n_clicks")])
+def update_figure4(selected_cases,
+                   selected_axis_type,
+                   selected_window,
+                   selected_countries,
+                   button,
+                   reset,
+                   ):
+    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    if 'button1' in changed_id:
+        selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
+        selected_countries.sort()
+    elif 'reset_button' in changed_id:
+        selected_countries = start_countries
+        selected_countries.sort()
+
+    df = sheets[0]
+    if selected_cases == 'total':
+        traces, layout = landskap(df, total=True, window=selected_window)
+    elif selected_cases == 'new':
+        traces, layout = landskap(df, total=False, window=selected_window)
+    else:
+        print('Something went wrong')
+
+    layout.update(dict(
+        xaxis={'title': 'Date'},
+        yaxis={'title': selected_cases.capitalize() + ' cases', 'type': selected_axis_type},
     ))
 
     return {
