@@ -11,7 +11,7 @@ import numpy as np
 from datetime import datetime
 import wget
 
-from utils import get_df, datetimeify, process_df, get_frame, get_xl_sheets
+from utils import get_df, process_df, get_frame, get_xl_sheets
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
 from my_dash_functions import landskap
 
@@ -19,9 +19,7 @@ df_conf_all = process_df(get_frame('confirmed'))
 df_deaths_all = process_df(get_frame('deaths'))
 all_countries = list(df_conf_all.keys())
 
-
-date_list = datetimeify(df_conf_all.index)
-
+country_options = [{'label': country, 'value': country} for country in all_countries]
 
 # Get Swedish data
 url = 'https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data'
@@ -79,17 +77,19 @@ app.layout = html.Div([
     The source code of this app is published on GitHub
     [here](https://github.com/erwulff/covid-19_data_exploration).
 
-    Use the search box below to add countries to the plots.
+    Use the search box to add countries to the graphs or click on
+    **DEFAULT COUNTRIES** or **NORDIC COUNTRIES** to populate the graphs.
     '''),
     html.Div([
         dcc.Dropdown(
             placeholder='Search countries...',
             id='country_dropdown',
             multi=True,
+            options=country_options,
             value=start_countries,
         ),
+        html.Button('Default countries', id='reset_button', n_clicks=0),
         html.Button('Nordic countries', id='button1', n_clicks=0),
-        html.Button('Reset', id='reset_button', n_clicks=0),
     ],
         className='twelve columns',
     ),
@@ -273,9 +273,6 @@ app.layout = html.Div([
 
 
 ])
-
-
-country_options = [{'label': country, 'value': country} for country in all_countries]
 
 
 @app.callback(
