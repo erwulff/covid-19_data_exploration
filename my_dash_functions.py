@@ -86,9 +86,12 @@ def landskap(df, total=False, window=1):
     dates = df.pop('Statistikdatum')
 
     sorted_df = df.sort_values(by=len(df) - 2, axis=1, ascending=False)
-    filtered_df = sorted_df.iloc[:, :16]
-    #filtered_df.insert(0, 'Statistikdatum', dates)
-    df = filtered_df
+    df = sorted_df
+    visible = ['legendonly' for i in range(len(df))]
+    for ii in range(4):
+        visible[ii] = True
+    scania_idx = df.columns.get_loc('Skåne')
+    visible[scania_idx] = True
 
     if total:
         df = df.cumsum()
@@ -104,6 +107,7 @@ def landskap(df, total=False, window=1):
                 line=dict(width=width),
                 name=str(landskap),
                 mode='lines+markers',
+                visible=visible[ii],
                 x=dates,
                 y=df[landskap].rolling(window=window).mean()))
 

@@ -78,7 +78,8 @@ app.layout = html.Div([
     [here](https://github.com/erwulff/covid-19_data_exploration).
 
     Use the search box to add countries to the graphs or click on
-    **DEFAULT COUNTRIES** or **NORDIC COUNTRIES** to populate the graphs.
+    **DEFAULT COUNTRIES** or **NORDIC COUNTRIES** to populate the graphs with a
+    predefined set of countries.
     '''),
     html.Div([
         dcc.Dropdown(
@@ -96,7 +97,7 @@ app.layout = html.Div([
     html.Div([
         dcc.Markdown('''
                      # Total confirmed cases/deaths
-                     ##### Click on countries in the legend to hide them
+                     ##### Click on countries in the legend to hide or show them
                      '''),
     ],
         className='twelve columns'
@@ -133,7 +134,7 @@ app.layout = html.Div([
     html.Div([
         dcc.Markdown('''
         # New confirmed cases/deaths per day
-        ##### Click on countries in the legend to hide them
+        ##### Click on countries in the legend to hide or show them
 
         '''),
     ],
@@ -195,7 +196,7 @@ app.layout = html.Div([
         This plot makes it easy to see which countries have managed to
         break the exponential trend, thus plummeting towards fewer new cases per
         day.
-        ##### Click on countries in the legend to hide them
+        ##### Click on countries in the legend to hide or show them
         '''),
     ],
         className='twelve columns'),
@@ -229,7 +230,7 @@ app.layout = html.Div([
         dcc.Markdown('''
         # A closer look at Sweden
         #### Top 15 regions according to number of confirmed cases
-        ##### Click on regions in the legend to hide them
+        ##### Click on regions in the legend to hide or show them
         '''),
     ],
         className='twelve columns'),
