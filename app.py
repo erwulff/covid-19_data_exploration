@@ -345,7 +345,8 @@ def update_figure2(selected_cases,
     if 'button1' in changed_id:
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
-    elif 'reset_button' in changed_id:
+    # Checking if buttons have 0 clicks makes sure the figures are rendered correctly first time app loads
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
         selected_countries = start_countries
         selected_countries.sort()
 
@@ -376,7 +377,7 @@ def update_drowdown2(button, reset):
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'button1' in changed_id:
         return ['Sweden', 'Denmark', 'Finland', 'Norway']
-    elif 'reset_button' in changed_id:
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
         return get_start_conutries()
 
 
@@ -397,7 +398,7 @@ def update_figure3(selected_cases,
     if 'button1' in changed_id:
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
-    elif 'reset_button' in changed_id:
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
         selected_countries = start_countries
         selected_countries.sort()
 
