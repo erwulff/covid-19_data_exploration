@@ -88,8 +88,8 @@ app.layout = html.Div([
             options=country_options,
             value=start_countries,
         ),
-        html.Button('Default countries', id='reset_button', n_clicks=0),
-        html.Button('Nordic countries', id='button1', n_clicks=0),
+        html.Button('Default countries', id='reset_button', n_clicks=None),
+        html.Button('Nordic countries', id='button1', n_clicks=None),
     ],
         className='twelve columns',
     ),
@@ -426,24 +426,11 @@ def update_figure3(selected_cases,
     Output('graph_sweden', 'figure'),
     [Input('dropdown_sweden', 'value'),
      Input('axis_dropdown_sweden', 'value'),
-     Input('window_selector_sweden', 'value'),
-     Input('country_dropdown', 'value'),
-     Input("button1", "n_clicks"),
-     Input("reset_button", "n_clicks")])
+     Input('window_selector_sweden', 'value')])
 def update_figure4(selected_cases,
                    selected_axis_type,
                    selected_window,
-                   selected_countries,
-                   button,
-                   reset,
                    ):
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    if 'button1' in changed_id:
-        selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
-        selected_countries.sort()
-    elif 'reset_button' in changed_id:
-        selected_countries = start_countries
-        selected_countries.sort()
 
     df = sheets[0]
     if selected_cases == 'total':
