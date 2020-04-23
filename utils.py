@@ -80,7 +80,11 @@ def datetimeify(ind):
     for ii, stamp in enumerate(ind):
         if len(stamp.split('/')[0]) == 1:
             stamp = '0' + stamp
-        date = datetime.strptime(stamp, '%m/%d/%Y')
+        try:
+            date = datetime.strptime(stamp, '%m/%d/%Y')
+        except ValueError:
+            date = datetime.strptime(stamp, '%m/%d/%y')
+
         date_list.append(date)
     return date_list
 
