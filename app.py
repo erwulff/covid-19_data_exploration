@@ -229,7 +229,6 @@ app.layout = html.Div([
     html.Div([
         dcc.Markdown('''
         # A closer look at Sweden
-        #### Top 15 regions according to number of confirmed cases
         ##### Click on regions in the legend to hide or show them
         '''),
     ],
