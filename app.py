@@ -88,8 +88,8 @@ app.layout = html.Div([
             options=country_options,
             value=start_countries,
         ),
-        html.Button('Default countries', id='reset_button', n_clicks=None),
-        html.Button('Nordic countries', id='button1', n_clicks=None),
+        html.Button('Default countries', id='reset_button', n_clicks=0),
+        html.Button('Nordic countries', id='button1', n_clicks=0),
     ],
         className='twelve columns',
     ),
@@ -270,18 +270,15 @@ app.layout = html.Div([
         dcc.Graph(id='graph_sweden', style={'height': '600px', 'width': '85vw'}, responsive=True),
         className='twelve columns'
     ),
-    html.Div(id='dummy_div'),
-
 ])
 
 
 @app.callback(
     Output("country_dropdown", "options"),
-    [Input("country_dropdown", "search_value"),
-     Input('dummy_div', 'children')],
+    [Input("country_dropdown", "search_value")],
     [State("country_dropdown", "value")],
 )
-def update_multi_options(search_value, dummy, value):
+def update_multi_options(search_value, value):
     if not search_value:
         raise PreventUpdate
     # Make sure that the set values are in the option list, else they will disappear
@@ -308,7 +305,7 @@ def update_figure(selected_cases,
     if 'button1' in changed_id:
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
-    elif 'reset_button' in changed_id:
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
         selected_countries = start_countries
         selected_countries.sort()
 
