@@ -74,6 +74,12 @@ app.layout = html.Div([
     The visualizations presented here are based on data from the Johns Hopkins
     University's GitHub [repository](https://github.com/CSSEGISandData/COVID-19).
 
+    The data presented under **A closer look at Sweden** is taken from the
+    Swedish Health Authorities'
+    [website](https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/bekraftade-fall-i-sverige/)
+    (www.folkhalsomyndigheten.se). More specifically, data from [this](https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data)
+    download link is used.
+
     The source code of this app is published on GitHub
     [here](https://github.com/erwulff/covid-19_data_exploration).
 
@@ -230,6 +236,10 @@ app.layout = html.Div([
         dcc.Markdown('''
         # A closer look at Sweden
         ##### Click on regions in the legend to hide or show them
+
+        Data presented here is taken from the Swedish Health Authorities'
+        [website](https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/bekraftade-fall-i-sverige/)
+        (www.folkhalsomyndigheten.se).
         '''),
     ],
         className='twelve columns'),
@@ -305,7 +315,7 @@ def update_figure(selected_cases,
     if 'button1' in changed_id:
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
-    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0 and selected_countries == get_start_conutries()):
         selected_countries = start_countries
         selected_countries.sort()
 
@@ -346,7 +356,7 @@ def update_figure2(selected_cases,
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
     # Checking if buttons have 0 clicks makes sure the figures are rendered correctly first time app loads
-    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0 and selected_countries == get_start_conutries()):
         selected_countries = start_countries
         selected_countries.sort()
 
@@ -398,7 +408,7 @@ def update_figure3(selected_cases,
     if 'button1' in changed_id:
         selected_countries = ['Sweden', 'Denmark', 'Finland', 'Norway']
         selected_countries.sort()
-    elif 'reset_button' in changed_id or (reset == 0 and button == 0):
+    elif 'reset_button' in changed_id or (reset == 0 and button == 0 and selected_countries == get_start_conutries()):
         selected_countries = start_countries
         selected_countries.sort()
 
