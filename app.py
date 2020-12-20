@@ -15,6 +15,8 @@ from utils import get_df, process_df, get_frame, get_xl_sheets
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
 from my_dash_functions import landskap
 
+import wget
+
 
 # Colors
 extra_layout_vars = dict(
@@ -37,9 +39,7 @@ country_options = [{"label": country, "value": country} for country in all_count
 
 # Get Swedish data
 url = "https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data"
-# wget.download(url, 'sweden_xl_file.xlsx', True)
-
-subprocess.run(["wget", "-q", "-r", "-N", url, "-O", "sweden_xl_file.xlsx"])
+wget.download(url, out="sweden_xl_file.xlsx")
 
 sheets = get_xl_sheets(file="sweden_xl_file.xlsx")
 
