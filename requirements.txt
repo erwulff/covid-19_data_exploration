@@ -1,8 +1,7 @@
-plotly
-dash
-pandas
+plotly==4.5.4
+dash==1.9.1
+pandas==1.0.3
 numpy
-gunicorn
-wget
-xlrd
-requests
+gunicorn==20.0.4
+xlrd==1.2.0
+requests==2.23.0
