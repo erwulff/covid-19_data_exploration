@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-from utils import get_df, process_df, get_frame, get_xl_sheets
+from utils import get_df, process_df, get_frame
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
 from my_dash_functions import landskap
 
@@ -39,10 +39,7 @@ country_options = [{"label": country, "value": country} for country in all_count
 # Get Swedish data
 url = "https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data"
 rr = requests.get(url)
-with open("sweden_xl_file.xlsx", "wb") as file:
-    file.write(rr.content)
-
-sheets = get_xl_sheets(file="sweden_xl_file.xlsx")
+sheet = pd.read_excel(rr.content)
 
 # Pick countries to plot
 def get_start_conutries():
@@ -565,7 +562,7 @@ def update_figure4(
     selected_cases, selected_axis_type, selected_window,
 ):
 
-    df = sheets[0]
+    df = sheet
     if selected_cases == "total":
         traces, layout = landskap(df, total=True, window=selected_window)
     elif selected_cases == "new":

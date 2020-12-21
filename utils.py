@@ -25,7 +25,7 @@ def get_xl_sheets(file, nbr_of_sheets=6):
 
     """
     sheets = []
-    for ii in range(6):
+    for ii in range(nbr_of_sheets):
         sheet = pd.read_excel(file, ii)
         sheets.append(sheet)
     return sheets
