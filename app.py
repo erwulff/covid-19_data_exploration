@@ -9,13 +9,12 @@ from dash.exceptions import PreventUpdate
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import wget
 
 from utils import get_df, process_df, get_frame, get_xl_sheets
 from my_dash_functions import total_vs_time, new_vs_time, new_vs_total
 from my_dash_functions import landskap
 
-import wget
+import requests
 
 
 # Colors
@@ -39,13 +38,13 @@ country_options = [{"label": country, "value": country} for country in all_count
 
 # Get Swedish data
 url = "https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce45db13f7e/data"
-wget.download(url, out="sweden_xl_file.xlsx")
+rr = requests.get(url)
+with open("sweden_xl_file.xlsx", "wb") as file:
+    file.write(rr.content)
 
 sheets = get_xl_sheets(file="sweden_xl_file.xlsx")
 
 # Pick countries to plot
-
-
 def get_start_conutries():
     start_countries = [
         "Sweden",
