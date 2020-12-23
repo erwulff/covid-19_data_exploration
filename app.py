@@ -41,6 +41,35 @@ url = "https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce
 rr = requests.get(url)
 sheet = pd.read_excel(rr.content)
 
+population_data_url = "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv"
+population_data = pd.read_csv(population_data_url)
+
+# Only keep relevant data
+year = 2020
+variant = "Medium"
+population_data = population_data[
+    (population_data["Time"] == year) & (population_data["Variant"] == variant)
+]
+
+
+def per_capita_norm(df):
+    for ii, col in enumerate(df.iteritems()):
+        if col[0] == "US":
+            location = "United States of America"
+        elif col[0] == "UK":
+            location = "United Kingdom"
+        else:
+            location = col[0]
+        df.iloc[:, ii] = (
+            col[1]
+            / population_data[population_data["Location"] == location][
+                "PopTotal"
+            ].values
+            * 100
+        )  # x100 to get per 100 000
+    return df
+
+
 # Pick countries to plot
 def get_start_conutries():
     start_countries = [
@@ -156,6 +185,18 @@ app.layout = html.Div(
                     ),
                     className="three columns",
                 ),
+                html.Div(
+                    dcc.Dropdown(
+                        id="norm_dropdown",
+                        options=[
+                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Total", "value": "total"},
+                        ],
+                        value="per capita",
+                        style=dropdown_style,
+                    ),
+                    className="three columns",
+                ),
             ],
             className="row",
         ),
@@ -199,6 +240,18 @@ app.layout = html.Div(
                             {"label": "Logarithmic", "value": "log"},
                         ],
                         value="log",
+                        style=dropdown_style,
+                    ),
+                    className="three columns",
+                ),
+                html.Div(
+                    dcc.Dropdown(
+                        id="norm_dropdown2",
+                        options=[
+                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Total", "value": "total"},
+                        ],
+                        value="per capita",
                         style=dropdown_style,
                     ),
                     className="three columns",
@@ -269,6 +322,18 @@ app.layout = html.Div(
                             style=dropdown_style,
                         ),
                     ],
+                    className="three columns",
+                ),
+                html.Div(
+                    dcc.Dropdown(
+                        id="norm_dropdown3",
+                        options=[
+                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Total", "value": "total"},
+                        ],
+                        value="per capita",
+                        style=dropdown_style,
+                    ),
                     className="three columns",
                 ),
                 html.Div(
@@ -392,12 +457,13 @@ def update_multi_options(search_value, value):
         Input("dropdown", "value"),
         Input("axis_dropdown", "value"),
         Input("country_dropdown", "value"),
+        Input("norm_dropdown", "value"),
         Input("button1", "n_clicks"),
         Input("reset_button", "n_clicks"),
     ],
 )
 def update_figure(
-    selected_cases, selected_axis_type, selected_countries, button, reset
+    selected_cases, selected_axis_type, selected_countries, selected_norm, button, reset
 ):
     changed_id = [p["prop_id"] for p in dash.callback_context.triggered][0]
     if "button1" in changed_id:
@@ -413,6 +479,9 @@ def update_figure(
         df = df_conf_all[selected_countries]
     elif selected_cases == "deaths":
         df = df_deaths_all[selected_countries]
+
+    if selected_norm == "per capita":
+        df = per_capita_norm(df)
 
     traces, layout = total_vs_time(df, descr=selected_cases)
 
@@ -438,6 +507,7 @@ def update_figure(
     [
         Input("dropdown2", "value"),
         Input("axis_dropdown2", "value"),
+        Input("norm_dropdown2", "value"),
         Input("window_selector", "value"),
         Input("country_dropdown", "value"),
         Input("button1", "n_clicks"),
@@ -447,6 +517,7 @@ def update_figure(
 def update_figure2(
     selected_cases,
     selected_axis_type,
+    selected_norm,
     selected_window,
     selected_countries,
     button,
@@ -467,6 +538,9 @@ def update_figure2(
         df = df_conf_all[selected_countries]
     elif selected_cases == "deaths":
         df = df_deaths_all[selected_countries]
+
+    if selected_norm == "per capita":
+        df = per_capita_norm(df)
 
     traces, layout = new_vs_time(df, descr=selected_cases, window=selected_window)
 
@@ -505,12 +579,13 @@ def update_drowdown2(button, reset):
         Input("dropdown3", "value"),
         Input("window_selector2", "value"),
         Input("country_dropdown", "value"),
+        Input("norm_dropdown3", "value"),
         Input("button1", "n_clicks"),
         Input("reset_button", "n_clicks"),
     ],
 )
 def update_figure3(
-    selected_cases, selected_window, selected_countries, button, reset,
+    selected_cases, selected_window, selected_countries, selected_norm, button, reset,
 ):
     changed_id = [p["prop_id"] for p in dash.callback_context.triggered][0]
     if "button1" in changed_id:
@@ -526,6 +601,9 @@ def update_figure3(
         df = df_conf_all[selected_countries]
     elif selected_cases == "deaths":
         df = df_deaths_all[selected_countries]
+
+    if selected_norm == "per capita":
+        df = per_capita_norm(df)
 
     traces, layout = new_vs_total(df, window=selected_window)
 
