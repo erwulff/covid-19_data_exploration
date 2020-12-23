@@ -485,12 +485,19 @@ def update_figure(
 
     traces, layout = total_vs_time(df, descr=selected_cases)
 
+    # Set the miminum range on the y-axis when using log scale to avoid outliers dominating the plot
+    if selected_axis_type == "log":
+        range = [0.001]
+    else:
+        range = None
+
     layout.update(
         dict(
             xaxis={"title": "Date", "gridcolor": gridcolor,},
             yaxis={
                 "title": "Total {}".format(selected_cases),
                 "type": selected_axis_type,
+                "range": range,
                 "gridcolor": gridcolor,
             },
         )
@@ -544,12 +551,19 @@ def update_figure2(
 
     traces, layout = new_vs_time(df, descr=selected_cases, window=selected_window)
 
+    # Set the miminum range on the y-axis when using log scale to avoid outliers dominating the plot
+    if selected_axis_type == "log":
+        range = [0.001]
+    else:
+        range = None
+
     layout.update(
         dict(
             xaxis={"title": "Date", "gridcolor": gridcolor,},
             yaxis={
                 "title": "New {}".format(selected_cases),
                 "type": selected_axis_type,
+                "range": range,
                 "gridcolor": gridcolor,
             },
         )
@@ -617,6 +631,7 @@ def update_figure3(
             yaxis={
                 "title": "New {}".format(selected_cases),
                 "type": "log",
+                "range": [0.001],
                 "gridcolor": gridcolor,
             },
         )
@@ -648,12 +663,19 @@ def update_figure4(
     else:
         print("Something went wrong")
 
+    # Set the miminum range on the y-axis when using log scale to avoid outliers dominating the plot
+    if selected_axis_type == "log":
+        range = [0.001]
+    else:
+        range = None
+
     layout.update(
         dict(
             xaxis={"title": "Date", "gridcolor": gridcolor,},
             yaxis={
                 "title": selected_cases.capitalize() + " cases",
                 "type": selected_axis_type,
+                "range": range,
                 "gridcolor": gridcolor,
             },
         )
