@@ -124,7 +124,7 @@ app.layout = html.Div(
     [here](https://github.com/erwulff/covid-19_data_exploration).
 
     Use the search box to add countries to the graphs or click on
-    **DEFAULT COUNTRIES** or **NORDIC COUNTRIES** to populate the graphs with a
+    **Default Countries** or **Scandinavian Countries** to populate the graphs with a
     predefined set of countries.
     """
         ),
@@ -144,7 +144,7 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Button("Default countries", id="reset_button", n_clicks=0),
-                html.Button("Nordic countries", id="button1", n_clicks=0),
+                html.Button("Scandinavian countries", id="button1", n_clicks=0),
             ],
             style=dict(padding_top="100px"),
         ),
