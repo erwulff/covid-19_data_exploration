@@ -328,10 +328,10 @@ app.layout = html.Div(
                     dcc.Dropdown(
                         id="norm_dropdown3",
                         options=[
-                            {"label": "Per capita", "value": "per capita"},
                             {"label": "Total", "value": "total"},
+                            {"label": "Per capita", "value": "per capita"},
                         ],
-                        value="per capita",
+                        value="total",
                         style=dropdown_style,
                     ),
                     className="three columns",
