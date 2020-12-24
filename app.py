@@ -41,8 +41,7 @@ url = "https://www.arcgis.com/sharing/rest/content/items/b5e7488e117749c19881cce
 rr = requests.get(url)
 sheet = pd.read_excel(rr.content)
 
-population_data_url = "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2019_TotalPopulationBySex.csv"
-population_data = pd.read_csv(population_data_url)
+population_data = pd.read_csv("external/WPP2019_TotalPopulationBySex.csv")
 
 # Only keep relevant data
 year = 2020
