@@ -73,9 +73,6 @@ def per_capita_norm(df):
 def get_start_conutries():
     start_countries = [
         "Sweden",
-        "Norway",
-        "Denmark",
-        "Finland",
         "France",
         "Spain",
         "Germany",
@@ -179,7 +176,7 @@ app.layout = html.Div(
                             {"label": "Linear", "value": "linear"},
                             {"label": "Logarithmic", "value": "log"},
                         ],
-                        value="log",
+                        value="linear",
                         style=dropdown_style,
                     ),
                     className="three columns",
@@ -188,7 +185,7 @@ app.layout = html.Div(
                     dcc.Dropdown(
                         id="norm_dropdown",
                         options=[
-                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Per 100,000", "value": "per capita"},
                             {"label": "Total", "value": "total"},
                         ],
                         value="per capita",
@@ -238,7 +235,7 @@ app.layout = html.Div(
                             {"label": "Linear", "value": "linear"},
                             {"label": "Logarithmic", "value": "log"},
                         ],
-                        value="log",
+                        value="linear",
                         style=dropdown_style,
                     ),
                     className="three columns",
@@ -247,7 +244,7 @@ app.layout = html.Div(
                     dcc.Dropdown(
                         id="norm_dropdown2",
                         options=[
-                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Per 100,000", "value": "per capita"},
                             {"label": "Total", "value": "total"},
                         ],
                         value="per capita",
@@ -328,7 +325,7 @@ app.layout = html.Div(
                         id="norm_dropdown3",
                         options=[
                             {"label": "Total", "value": "total"},
-                            {"label": "Per capita", "value": "per capita"},
+                            {"label": "Per 100,000", "value": "per capita"},
                         ],
                         value="total",
                         style=dropdown_style,
@@ -397,7 +394,7 @@ app.layout = html.Div(
                             {"label": "Linear", "value": "linear"},
                             {"label": "Logarithmic", "value": "log"},
                         ],
-                        value="log",
+                        value="linear",
                         style=dropdown_style,
                     ),
                     className="three columns",
