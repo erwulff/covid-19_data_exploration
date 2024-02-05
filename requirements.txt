@@ -1,5 +1,5 @@
 plotly==4.5.4
-dash==1.9.1
+dash==2.15.0
 pandas==1.0.3
 numpy
 gunicorn==20.0.4
